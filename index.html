@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Code Quiz | FUN </title>
+        <link rel="stylesheet" href="./style.css">
+    </head>
+
+    <body> 
+
+        <header>
+            <h1 id="view-high-scores">View High Scores</h1> 
+            <h1 class="timer">Time</h1>
+        </header>
+
+        <div id="box1" class="first">
+            <div class="box-start">
+                <h2>Coding Quiz Challenge</h2>  
+                <p> Answer the following code-related questions within the time limit. Correct answers are worth 1 point.
+                    Incorrect answers will penalize your time by 3 seconds. 
+                </p>
+                <button class="start-btn" id="start-game">Start Quiz</button>
+            </div>    
+        </div>
+
+        <div id="question-boxes" class="hide">
+            <div class="questions">
+                <div id="question"></div>
+                <div id="answer-buttons" class="btn-layout"></div>
+            </div>
+        </div>
+        <div class="hide" id="correct">
+            <h3>Correct</h3>
+        </div>
+        <div class="hide" id="wrong">
+            <h3> Wrong </h3>
+        </div>
+
+        <div id="end-box" class="hide">
+           <div class="box-end">
+                <div id=score-banner>
+                    <h2>All done!</h2>
+                </div>  
+                <div id="initials-form" class="initials">
+                        <p> Enter Initials:</p>
+                        <input type="text" name="initials" id="initials" class="text-input" />
+                        <button class="btn-startend" id="submit-score" type="submit">Submit</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="high-score-box" class="hide">
+          <div class="high-scores box">
+                    <h2 class="high-scores">High Scores</h2>
+                    <ol id="high-score-list" class="score-list"></ol>
+          </div>
+        </div>
+
+    <script src="./script.js"></script> 
+</body>
+</html>
