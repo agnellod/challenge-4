@@ -9,69 +9,155 @@
 // THEN the game is over
 // WHEN the game is over
 // THEN I can save my initials and my score
-var viewhighscoresEl = document.getElementById("view-high-scores");
-var box1El = document.getElementById("box1");
-var questionboxesEl = document.getElementById("question-boxes");
-var questionEl = document.getElementById("question");
-var answerbuttonsEl = document.getElementById("answer-buttons");
-var correctEl = document.getElementById("correct");
-var wrongEl = document.getElementById("wrong");
-var endboxEL = document.getElementById("end-box");
-var scorebannerEl = document.getElementById("score-banner");
-var initialsformEl = document.getElementById("initials-form");
-var timerEl = document.querySelector("#timer");
-var startbtn = document.getElementById("start-game");
 
-var questions = [
-    { q: 'Arrays in Javascript can be used to store __________.', 
-      a: 'all of the above', 
+const questions = [
+    { question: 'Arrays in Javascript can be used to store __________.', 
+      answer: 'all of the above', 
       choices: ['numbers', 'booleans','strings', 'all of the above']
     },
-    { q: 'Inside which HTML element do we put the javascript?', 
-      a: '<script>', 
+    { question: 'Inside which HTML element do we put the javascript?', 
+      answer: '<script>', 
       choices: ['<h1>','<js>','<script>','<head>']
     },
-    { q: 'In the code -- setinterval(time(),1000) -- what is time()?', 
-      a: 'callback function', 
+    { question: 'In the code -- setinterval(time(),1000) -- what is time()?', 
+      answer: 'callback function', 
       choices: ['callback function', 'undefined','variable', 'all of the above']
     },
-    { q: 'What syntax would call a function?', 
-      a: 'function()', 
+    { question: 'What syntax would call a function?', 
+      answer: 'function()', 
       choices: ['var function', 'function', 'call function', 'function()']
     },
-    { q: 'When did javascript first appear?', 
-      a: '1995', 
+    { question: 'When did javascript first appear?', 
+      answer: '1995', 
       choices: ['1995','Roaring twenties','2005','2000']
     },
-    { q: 'What does DOM stand for?', 
-      a: 'Document Object Model', 
+    { question: 'What does DOM stand for?', 
+      answer: 'Document Object Model', 
       choices: ['Do Overnight Modules', 'Document Object Model','Divas Obviously Model','Do Oo Mo']
     },
-    { q: 'What is getItem commonly used for?', 
-      a: 'local storage', 
+    { question: 'What is getItem commonly used for?', 
+      answer: 'local storage', 
       choices: ['adding drama','local storage','online shopping','naming a variable']
     },
-  ];
-  var count = 60
-  var countdown;
+  ]
+
+  const startBox = document.querySelector('#start-box');
+  const questionBox = document.querySelector('#question-box');
+  const scoreBox = document.querySelector('#score-box');
+  const leaderboardBox = document.querySelector('#leaderboard-box');
 
 
-  function startGame() {
-    box1El.setAttribute("class", "hide");
-    questionboxesEl.removeAttribute("class", "hide");
+function hideBoxes() {
+  startBox.setAttribute("hidden", true);
+  questionBox.setAttribute("hidden", true);
+  scoreBox.setAttribute("hidden", true);
+  leaderboardBox.setAttribute("hidden", true);
+
+}
+const resultsDiv = document.querySelector('#results-div');
+const resultsOutput = document.querySelector('#results-output');
+
+function hideResultsOutput () {
+  resultsDiv.style.display ="none";
+}
+
+var countdownID;
+var time;
+var currentQuestion;
+var score = 0;
+
+document.querySelector("#start-button").addEventListener("click", startQuiz);
+
+function startQuiz() {
+  hideBoxes();
+
+  questionBox.removeAttribute("hidden");
+
+  currentQuestion = 0;
+  
+  displayQuestion();
+
+  time = 60;
+
+  countdownID = setInterval(countdown, 1000);
+
+  displayTime();
+}
+
+
+function countdown(){
+  time--;
+  displayTime();
+  if (time < 1) {
+    endQuiz();
+  }
+}
+
+const timeDisplay = document.querySelector("#time");
+
+
+function displayTime() {
+  timeDisplay.textContent = time;
+}
+
+function displayQuestion() {
+  let question = questions[currentQuestion];
+  let choices = question.choices;
+
+  let h2QuestionElement = document.querySelector("#question-text");
+  h2QuestionElement.textContent = question.question;
+
+  for (let i = 0; i < choices.length; i++) {
+  let choice = choices[i];
+  let choiceButton = document.querySelector("#choice" + i)
+  choiceButton.textContent = choice;
     
-    for (let index = 0; index < questions.length; index++) {
-        console.log(questions);
-    questionEl.append(questions[0].q);
-    for (let c = 0; c < questions(choices); c++) {
-    var choicebtn = document.createElement("button");
-    choicebtn.setAttribute('numbers', 'booleans', );
-    answerbuttonsEl.append(questions[index].choices[c]);
-        
-        
-    }
+  }
+}
+
+document.querySelector("#quiz-choices").addEventListener("click", checkAnswer);
+
+function choiceIsCorrect(choiceButton) {
+  return choiceButton.textContent === questions[currentQuestion].answer;
+}
+
+function checkAnswer(eventObject) {
+
+  let choiceButton = eventObject.target;
+
+  resultsDiv.style.display = "block";
+
+  if (choiceIsCorrect(choiceButton)) {
+    resultsOutput.textContent = "Correct!";
+    setTimeout(hideResultsOutput, 1000);
+    score =  score + 5
+  } 
+  
+  else {
+    resultsOutput.textContent = "Incorrect!";
+    setTimeout(hideResultsOutput, 1000);
+
+  if (time >= 5) {
+      time = time - 5;
+      displayTime();
+    } 
+  else {
+      time = 0;
+      displayTime();
+      endQuiz();
     }
   }
+}
+currentQuestion++;
+  if (currentQuestion < questions.length) {
+    displayQuestion();
+  } else {
+    endQuiz();
+  }
 
-
-startbtn.addEventListener("click", startGame);
+function endQuiz() {
+    clearInterval(countdownID);
+    hideBoxes();
+    scoreBox.removeAttribute("hidden");
+    score.textContent = time;
+  }
